@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2015",
+        "lib": ["ES2015", "DOM"],
+        "outDir": "lib",
+        "declaration": true
+    }
+}

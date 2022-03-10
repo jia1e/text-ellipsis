@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Ellipsis 2</title>
+    <style>
+        :root {
+            font-size: 14px;
+        }
+
+        em {
+            color: deeppink;
+        }
+
+        .textarea {
+            width: 450px;
+            height: 150px;
+        }
+
+        .text-container {
+            display: inline-flex;
+            background: #fb8500;
+            padding: .15em 0 .15em .15em;
+            border-radius: .35em;
+            user-select: none;
+            font-size: var(--my-font-size);
+            /* font-family: var(--my-font-family); */
+        }
+
+        .text-wrapper {
+            background: white;
+            border-radius: .3em;
+            white-space: nowrap;
+            width: var(--my-width);
+            height: 1.5em;
+            line-height: 1.5em;
+        }
+
+        .resize-handler {
+            width: .55em;
+            cursor: col-resize;
+            display: flex;
+            align-items: center;
+        }
+
+        .resize-line {
+            border-left: .15em solid white;
+            margin-left: .2em;
+            height: .65em;
+            border-radius: .075em;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="form">
+        <table>
+            <tbody>
+                <tr>
+                    <td>Text:</td>
+                    <td>
+                        <textarea name="text" class="textarea"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ellipsis:</td>
+                    <td>
+                        <input name="ellipsis" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Offset Head:</td>
+                    <td>
+                        <input name="offsetHead" type="number" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Offset Tail:</td>
+                    <td>
+                        <input name="offsetTail" type="number" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Font Size:</td>
+                    <td>
+                        <select name="fontSize">
+                            <option value="14px"> 14px </option>
+                            <option value="28px"> 28px </option>
+                            <option value="42px"> 42px </option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <br />
+    <div class="text-container">
+        <div class="text-wrapper" id="text-wrapper"></div>
+        <div class="resize-handler" id="resize-handler">
+            <div class="resize-line"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import ellipsis from '../es/index.js';
+        const root = document.querySelector(':root');
+        const form = document.querySelector('#form');
+        const resizeHandler = document.querySelector('#resize-handler');
+        const textWrapper = document.querySelector("#text-wrapper");
+
+        const fontFamily = `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'`
+        let text = `床前<em>明月光</em>，Before my bed <em>a pool of light</em>.疑是<em>地上霜</em>。Can it be <em>hoarfrost</em> on the ground?<em>举头</em>望<em>明月</em>，<em>Looking up</em>, I find the <em>moon bright</em>;<em>低头</em>思<em>故乡</em>。<em>Bowing</em>, in <em>homesickness</em> I'm <em>drowned</em>.`
+        let ellip = "...";
+        let offsets = [2, 13];
+        let fontSize = '28px';
+        let width = 250;
+        form.text.value = text;
+        form.ellipsis.value = ellip;
+        form.offsetHead.value = offsets[0];
+        form.offsetTail.value = offsets[1];
+        form.fontSize.value = fontSize;
+
+        root.style.setProperty("--my-font-size", fontSize);
+        root.style.setProperty("font-family", fontFamily);
+        root.style.setProperty("--my-width", `${width}px`);
+
+        function setInnerHtml() {
+            textWrapper.innerHTML = ellipsis(text, width, offsets, ellip, `${fontSize} ${fontFamily}`);
+        }
+
+        setInnerHtml()
+
+        form.addEventListener('change', () => {
+            text = form.text.value;
+            ellip = form.ellipsis.value;
+            offsets = [form.offsetHead.value, form.offsetTail.value];
+            fontSize = form.fontSize.value;
+            root.style.setProperty("--my-font-size", fontSize);
+            setInnerHtml()
+        });
+
+        resizeHandler.addEventListener("mousedown", (e) => {
+            const startX = e.clientX;
+            const currentWidth = textWrapper.offsetWidth;
+            function onMouseMove(e) {
+                width = currentWidth + e.clientX - startX;
+                root.style.setProperty("--my-width", `${width}px`);
+                setInnerHtml()
+            }
+            function onMouseUp() {
+                window.removeEventListener("mousemove", onMouseMove);
+                window.removeEventListener("mouseup", onMouseUp);
+            }
+
+            window.addEventListener("mousemove", onMouseMove);
+            window.addEventListener("mouseup", onMouseUp);
+        })
+    </script>
+</body>
+
+</html>

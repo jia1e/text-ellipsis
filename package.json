@@ -1,0 +1,40 @@
+{
+  "name": "text-ellipsis2",
+  "version": "0.0.1",
+  "description": "Truncate a string.",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "es"
+  ],
+  "scripts": {
+    "build": "tsc && tsc --module esnext --outDir es",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ellipsis",
+    "text",
+    "string",
+    "overflow",
+    "em"
+  ],
+  "author": "Jia1e <zhangjialecn@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.6.2"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jia1e/text-ellipsis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jia1e/text-ellipsis/issues"
+  },
+  "homepage": "https://github.com/jia1e/text-ellipsis#readme"
+}
