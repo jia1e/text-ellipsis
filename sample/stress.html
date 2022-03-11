@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .header {
+            position: sticky;
+            left: 0;
+            top: 0;
+            display: flex;
+            color: red;
+            background: white;
+        }
+
+        .range {
+            flex-grow: 1;
+        }
+
+        .line {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+            font-size: 14px;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <header class="header">
+            <span>{{ellipsisLines.length}} / {{lines.length}}</span>
+            <input class="range" type="range" v-model="visiblePercentage" step="0.01" />
+        </header>
+        <article>
+            <p class="line" v-for="line, index in ellipsisLines" :title="lines[index]">
+                {{line}}
+            </p>
+        </article>
+    </div>
+    <script type="module">
+        import { createApp } from 'https://unpkg.com/vue@3.2.31/dist/vue.esm-browser.js';
+        import ellipsis from '../es/index.js';
+
+        createApp({
+            data() {
+                return {
+                    lines: [],
+                    width: document.body.offsetWidth,
+                    ellipsis: ".  .. .    ..... .  .. . ",
+                    offsets: [8, 3],
+                    fontFamily: `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'`,
+                    fontSize: 14,
+                    html: true,
+                    visiblePercentage: 2
+                }
+            },
+            async mounted() {
+                const book = await fetch('./the-dream-of-the-red-chamber.txt').then(res => res.text());
+                this.lines = book.split("\n").map(line => line.trim());
+                window.addEventListener('resize', () => {
+                    this.width = window.innerWidth
+                })
+            },
+            computed: {
+                ellipsisLines() {
+                    const visibleLines = Math.floor(this.lines.length * this.visiblePercentage / 100)
+                    return this.lines.slice(0, visibleLines).map(line => ellipsis(line, this.width, this.offsets, this.ellipsis, `${this.fontSize}px ${this.fontFamily}`, this.html))
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
