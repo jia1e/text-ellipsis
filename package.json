@@ -15,10 +15,13 @@
   },
   "keywords": [
     "ellipsis",
-    "text",
-    "string",
+    "cut text",
+    "truncate",
     "overflow",
-    "em"
+    "text width",
+    "hide text",
+    "rich text",
+    "canvas"
   ],
   "author": "Jia1e <zhangjialecn@gmail.com>",
   "license": "MIT",

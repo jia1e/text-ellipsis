@@ -22,7 +22,8 @@ export default function ellipsis(
     width: number,
     offsets: number | [number] | [number, number] = [0, 0],
     ellipsis = "...",
-    font?: string
+    font = "10px sans-serif",
+    html = true
 ) {
     let offsetHead: number, offsetTail: number;
     if (typeof offsets === "number") {
@@ -45,7 +46,7 @@ export default function ellipsis(
     const headTags: Segment[] = [];
 
     while (true) {
-        const match = re.exec(text);
+        const match = html ? re.exec(text) : null;
         if (match) {
             while (cursor < match.index) {
                 const strWidth = measureText(text[cursor], font);
@@ -132,6 +133,7 @@ export default function ellipsis(
                     tailTags[tailTags.length - 1][1] === seg[1]
                 ) {
                     tail = seg[2] + tail;
+                    tailTags.pop();
                 }
             } else {
                 break;
