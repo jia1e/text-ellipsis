@@ -1,6 +1,6 @@
 {
   "name": "text-ellipsis2",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Truncate a string.",
   "main": "lib/index.js",
   "module": "es/index.js",
