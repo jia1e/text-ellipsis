@@ -108,9 +108,17 @@
         </div>
         <div>Performance: {{result.performance}} ms</div>
     </div>
+    <script type="importmap">
+        {
+            "imports": {
+                "vue": "https://unpkg.com/vue/dist/vue.esm-browser.js",
+                "text-ellipsis2": "https://unpkg.com/text-ellipsis2/es/index.js"
+            }
+        }
+    </script>
     <script type="module">
-        import { createApp } from 'https://unpkg.com/vue@3.2.31/dist/vue.esm-browser.js';
-        import ellipsis from '../es/index.js';
+        import { createApp } from 'vue';
+        import ellipsis from 'text-ellipsis2';
 
         createApp({
             data() {
